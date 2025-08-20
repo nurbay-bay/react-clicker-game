@@ -14,6 +14,9 @@ function App() {
   // Базовый шанс бага
   const [bugChance, setBugChance] = useState(0.05)
 
+  // LoC per Click
+  const [locPerClick, serLocPerClick] = useState(() => Number(localStorage.getItem("locPerClick")) || 1)
+
   // реак хук для синхронизации с внешними данными
   useEffect(() => {
     localStorage.setItem("LoC", loc)
@@ -23,9 +26,21 @@ function App() {
     localStorage.setItem("bugs", bugs)
   }, [bugs])
 
+  useEffect(() => {
+    localStorage.setItem("locPerClick", locPerClick)
+  }, [locPerClick])
+
   const resetProgress = () => {
     setLoc(0)
     setBugs(0)
+    serLocPerClick(1)
+  }
+
+  const updateLocPerClick = () => {
+    if (loc >= locPerClick * 100) {
+      serLocPerClick(prev => prev + 1)
+      setLoc(prev => prev - (locPerClick * 100))
+    }
   }
   
   return (
@@ -37,12 +52,13 @@ function App() {
           <h2>{bugs} <small>Bugs</small> </h2>
           <h2>{(bugChance * 100).toFixed(2)}% <small>Bug Chance</small> </h2>
           <div className={s.mainBtn}>
-            <ClickerBtn loc={loc} setLoc={setLoc} bugChance={bugChance} setBugChance={setBugChance} bugs={bugs} setBugs={setBugs}/>
+            <ClickerBtn loc={loc} setLoc={setLoc} bugChance={bugChance} setBugChance={setBugChance} bugs={bugs} setBugs={setBugs} locPerClick={locPerClick}/>
             <BugFixes bugs={bugs} setBugs={setBugs}/>
           </div>
         </div>
         <div className={s.container}>
           <Button text={"Reset progress"} onClick={resetProgress}/>
+          <Button text={"LoC Per Click +1"} onClick={updateLocPerClick} price={locPerClick * 100} loc={loc}/>
         </div>
       </div>
 

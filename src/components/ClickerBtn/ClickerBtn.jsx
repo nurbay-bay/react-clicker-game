@@ -6,7 +6,7 @@ import s from './ClickerBtn.module.scss'
 const k = 0.04 // коффициент увеличение шанса бага
 const delay = 500 // пауза (мсек) нужная для сброса шанса
 
-function ClickerBtn({loc, setLoc, bugChance, setBugChance, bugs, setBugs}) {
+function ClickerBtn({loc, setLoc, bugChance, setBugChance, bugs, setBugs, locPerClick}) {
   // реакт хук для ссылки на значение без рендора
   // использую для назначения ID на таймер
   const timerRef = useRef(null)
@@ -15,7 +15,7 @@ function ClickerBtn({loc, setLoc, bugChance, setBugChance, bugs, setBugs}) {
   const handleClick = () => {
     // чистка таймера по идентификатору
     if (timerRef.current) clearTimeout(timerRef.current)
-    setLoc(prev => prev + 1)
+    setLoc(prev => prev + locPerClick)
     // вероятность бага
     if (Math.random() <= bugChance) setBugs(prev => prev + 1) // функциональный setState для правильной работы при кликании и будущих асинхронных обнавлениях
 
