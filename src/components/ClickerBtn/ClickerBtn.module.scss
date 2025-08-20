@@ -1,0 +1,23 @@
+.btn {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border: 10px solid rgb(119, 99, 73);
+  border-radius: 50%;
+  background-color: green;
+  transition: .2s;
+
+  &:active {
+    background-color: red;
+    scale: 1.1;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  img {
+    width: 90%;
+  }
+}
